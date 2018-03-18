@@ -107,11 +107,11 @@ namespace Spike.Instrumentation.Monitoring
         }
         protected void RegisterCounters()
         {
-            // Logger.Info($"Checking if counters category [{CategoryName}] should be created = [{CreateCountersAllowed && IsAdministrator}]. Required >> CreateCounters [{CreateCountersAllowed}] IsAdministrator [{IsAdministrator}] Exists [{PerformanceCounterCategory.Exists(CategoryName)}]");
+            _logger.Info($"Checking if counters category [{CategoryName}] should be created = [{CreateCountersAllowed && IsAdministrator}]. Required >> CreateCounters [{CreateCountersAllowed}] IsAdministrator [{IsAdministrator}] Exists [{PerformanceCounterCategory.Exists(CategoryName)}]");
 
             if (CreateCountersAllowed && IsAdministrator)
             {
-                // Logger.Info($"Counters >> Beginning to removing existing category [{CategoryName}]");
+                _logger.Info($"Counters >> Beginning to removing existing category [{CategoryName}]");
                 if (PerformanceCounterCategory.Exists(CategoryName))
                 {
                    PerformanceCounterCategory.Delete(CategoryName);
@@ -120,7 +120,7 @@ namespace Spike.Instrumentation.Monitoring
 
             if (!CreateCountersAllowed || PerformanceCounterCategory.Exists(CategoryName)) return;
 
-            // Logger.Info($"Counters >> Beginning creation of a new category [{CategoryName}]");
+            _logger.Info($"Counters >> Beginning creation of a new category [{CategoryName}]");
 
             var counterData = new List<CounterCreationData>();
             foreach (var monitor in _registeredMonitors)
@@ -132,7 +132,7 @@ namespace Spike.Instrumentation.Monitoring
 
             PerformanceCounterCategory.Create(CategoryName, CategoryDescription, PerformanceCounterCategoryType.SingleInstance, dataCollection);
 
-            // Logger.Info($"Counters >> Completed creating category [{CategoryName}]");
+            _logger.Info($"Counters >> Completed creating category [{CategoryName}]");
 	}
 
         public void StartMonitoring()
